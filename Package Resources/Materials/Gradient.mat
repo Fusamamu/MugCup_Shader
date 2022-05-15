@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SkyGradient
+  m_Name: Gradient
   m_Shader: {fileID: -6465566751694194690, guid: 268579dc1240d4bbd8f4a412cdbd3fba, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4

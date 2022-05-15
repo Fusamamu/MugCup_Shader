@@ -1,0 +1,16 @@
+{
+    "name": "com.mugcupp.mugcup-shader.editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:868fd0d7c181d49a5a1db2d812805ba5"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

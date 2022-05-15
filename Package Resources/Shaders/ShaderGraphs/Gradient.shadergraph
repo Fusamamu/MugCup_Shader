@@ -2649,7 +2649,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "e79ce3db5ad145338f67a5c752d03164",
     "m_Id": 0,
-    "m_DisplayName": "Origin",
+    "m_DisplayName": "Origin_2",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
