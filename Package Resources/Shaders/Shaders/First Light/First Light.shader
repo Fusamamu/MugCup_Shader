@@ -4,6 +4,8 @@ Shader "Unlit/First Light"
     {
         _Tint       ("Tint", color)             = (1.0, 1.0, 1.0, 1.0)
         _MainTex    ("Albedo", 2D)              = "white" {}
+        //_SpecularTint ("Specular", Color) = (0.5, 0.5, 0.5)
+        [Gamma] _Metallic   ("Metallic", Range(0, 1)) = 0
         _Smoothness ("Smoothness", Range(0, 1)) = 0.5
     }
     SubShader
@@ -14,12 +16,14 @@ Shader "Unlit/First Light"
         Pass
         {
             CGPROGRAM
+            #pragma target 3.0
+            
             #pragma vertex vert
             #pragma fragment frag
         
-            #include "UnityCG.cginc"
-            #include "UnityStandardBRDF.cginc"
-
+            //#include "UnityCG.cginc"
+            //#include "UnityStandardBRDF.cginc"
+            #include "UnityPBSLighting.cginc"
 
             struct appdata
             {
@@ -37,6 +41,8 @@ Shader "Unlit/First Light"
             };
 
             float4    _Tint;
+            //float4    _SpecularTint;
+            float     _Metallic;
             float     _Smoothness;
             
             sampler2D _MainTex;
@@ -94,10 +100,27 @@ Shader "Unlit/First Light"
                 float3 _lightColor = _LightColor0.rgb;
                 
 				float3 _albedo = tex2D(_MainTex, i.uv).rgb * _Tint.rgb;
-                
-				float3 diffuse =_albedo * _lightColor * DotClamped(_lightDir, i.normal);
 
-                float3 _viewDir       = normalize(_WorldSpaceCameraPos - i.worldPos);
+                //float3 _specularTint        = _albedo * _Metallic;
+				//float _oneMinusReflectivity = 1 - _Metallic;
+                //_albedo *= _oneMinusReflectivity;
+
+                float3 _specularTint;
+				float _oneMinusReflectivity;
+
+                _albedo = DiffuseAndSpecularFromMetallic(_albedo, _Metallic, _specularTint, _oneMinusReflectivity);
+
+				//_albedo = EnergyConservationBetweenDiffuseAndSpecular(_albedo, _SpecularTint.rgb, _oneMinusReflectivity);
+                
+                
+				float3 _diffuse =_albedo * _lightColor * DotClamped(_lightDir, i.normal);
+
+                float3 _viewDir = normalize(_WorldSpaceCameraPos - i.worldPos);
+
+                /*Use "_halfVector for "Blinn" approach.*/
+                float3 _halfVector = normalize(_lightDir + _viewDir);
+
+                /*Use "_reflactionDir" for "Phong" approach.*/
                 float3 _reflectionDir = reflect(-_lightDir, i.normal);
 
                 /*This shows reflection direction normal vector*/
@@ -107,7 +130,16 @@ Shader "Unlit/First Light"
                 //return DotClamped(_viewDir, _reflectionDir);
 
                 /*This uses _Smoothness to control how much intensity of the reflection area.*/
-                return pow(DotClamped(_viewDir, _reflectionDir),_Smoothness * 100);
+
+                /*"Phong"*/
+                //return pow(DotClamped(_viewDir, _reflectionDir),_Smoothness * 100);
+
+                /*"Blinn"*/
+                //float3 _specular = _SpecularTint.rgb * _lightColor * pow(DotClamped(_halfVector, i.normal),_Smoothness * 100);
+
+                float3 _specular = _specularTint.rgb * _lightColor *  pow(DotClamped(_halfVector, i.normal),_Smoothness * 100);
+
+                return float4(_diffuse + _specular, 1);
             }
             ENDCG
         }
