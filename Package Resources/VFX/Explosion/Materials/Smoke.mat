@@ -1,18 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7572423058750433383
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 4
 --- !u!21 &2100000
 Material:
   serializedVersion: 6
@@ -20,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StylizedWater_V2
-  m_Shader: {fileID: -6465566751694194690, guid: 2cd55004cc2f04c0ebbd09617e208e1a, type: 3}
+  m_Name: Smoke
+  m_Shader: {fileID: -6465566751694194690, guid: 08ae67c6a7d8d4715aa30fba4cfab982, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -89,14 +76,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_160342aba50a4b1cb1971c61f087697b: 0.04
-    - Vector1_2d024d0a16dc443b83725473c63ce423: 0.1
-    - Vector1_30a75b9545234135842309c97cd008f8: 1.17
-    - Vector1_559b425e3bd349f8afb25494ef0adee7: 1.52
-    - Vector1_68dc9960b31e459d8017d015b3336b4e: 82.5
-    - Vector1_7f3efebb885144f9a1b8e48cdd5a2e44: 0.04
-    - Vector1_d8eec809f06546c991609b64e0fa9f29: 1.86
-    - Vector1_dd5f34eb88bf4ae2a07944bee8c8a530: 1
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -124,11 +103,23 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_4a59fee238b54c71971313b1e318d6ab: {r: 0.66437244, g: 0.59861165, b: 0.7169812, a: 1}
-    - Color_b3262bb2020c43448beaf22ba9f1fe7a: {r: 0.754717, g: 0.754717, b: 0.754717, a: 0.70980394}
-    - Color_bd4a7720b827479b83c491a83725bdf8: {r: 0.05089783, g: 0.0060074767, b: 0.084905684, a: 0.46666667}
+    - Color_e33a253df8cc413b9b2108e0c22ca023: {r: 0.5471698, g: 0.27745637, b: 0.12130651, a: 0}
+    - Color_f7317ac8f27641a48e3c815e5f5f4292: {r: 86.9434, g: 41.37897, b: 6.1516547, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
+--- !u!114 &4383905692599254541
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 4
