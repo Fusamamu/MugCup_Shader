@@ -32,6 +32,7 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
         _Radius("Radius", float) = 1
         _SecondaryRadius("SecondaryRadius", float) = 0.5
         
+         _NoiseScale ("Noise Scale", Range(0, 10)) = 1 
         _WobbleSpeed("Wobble Speed", float) = 1
         _ClockFrame ("Clock Frame" , int  ) = 1
         
@@ -55,13 +56,18 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
                 float4 vertex : POSITION;
                 float2 uv     : TEXCOORD0;
                 //float3 uv     : TEXCOORD1;
+
+                float3 normal : NORMAL;
             };
+            
             struct v2f
             {
                 float4 vertex   : SV_POSITION;
-                float2 uv       : TEXCOORD0;
-                float2 uvSplat  : TEXCOORD1;
-                float3 uvWorld     : TEXCOORD2;
+                float3 worldPos : TEXCOORD0;
+                float2 uv       : TEXCOORD1;
+                float2 uvSplat  : TEXCOORD2;
+                float3 uvWorld  : TEXCOORD3;
+                float3 normal   : TEXCOORD4;
             };
             
             sampler2D _MainTex   ;
@@ -93,6 +99,7 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
             float _Radius;
             float _SecondaryRadius;
 
+            float _NoiseScale;
             float _WobbleSpeed;
             int   _ClockFrame;
 
@@ -105,7 +112,8 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
             {
                 v2f o;
                 
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.vertex   = UnityObjectToClipPos(v.vertex);
+                o.worldPos = mul (unity_ObjectToWorld, v.vertex);
                 
                // o.uv      = TRANSFORM_TEX(v.uv, _MainTex);
 
@@ -116,6 +124,8 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
                 o.uvSplat = v.uv;
 
                 o.uvWorld = mul(unity_ObjectToWorld, v.vertex);
+
+                o.normal = v.normal;
                 
                 return o;
             }
@@ -126,11 +136,27 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
                 
                 float4 splat = tex2D(_MainTex, i.uvSplat);
                 
-     //            return
-     //                tex2D(_Texture1, i.uv) * splat.r +
-					// tex2D(_Texture2, i.uv) * splat.g +
-					// tex2D(_Texture3, i.uv) * splat.b +
-					// tex2D(_Texture4, i.uv) * (1 - splat.r - splat.g - splat.b);
+                	// triplanar noise
+	        //  float3 blendNormal = saturate(pow(IN.worldNormal * 1.4,4));
+         //    half4 nSide1 = tex2D(_NoiseTex, (IN.worldPos.xy + _Time.x) * _NScale); 
+	        // half4 nSide2 = tex2D(_NoiseTex, (IN.worldPos.xz + _Time.x) * _NScale);
+	        // half4 nTop = tex2D(_NoiseTex, (IN.worldPos.yz + _Time.x) * _NScale);
+         //
+	        // float3 noisetexture = nSide1;
+         //    noisetexture = lerp(noisetexture, nTop, blendNormal.x);
+         //    noisetexture = lerp(noisetexture, nSide2, blendNormal.y);
+
+                float3 _blendNormal = saturate(pow(i.normal * 1.4, 4));
+
+                half4 _nSide1 = tex2D(_FlowMapTexture, (i.worldPos.xy + _Time.x * _WobbleSpeed) * _NoiseScale);
+                half4 _nSide2 = tex2D(_FlowMapTexture, (i.worldPos.xz + _Time.x * _WobbleSpeed) * _NoiseScale);
+                half4 _nTop   = tex2D(_FlowMapTexture, (i.worldPos.yz + _Time.x * _WobbleSpeed) * _NoiseScale);
+
+                float3 _noiseTexture = _nSide1;
+                _noiseTexture = lerp(_noiseTexture, _nTop  , _blendNormal.x);
+                _noiseTexture = lerp(_noiseTexture, _nSide2, _blendNormal.y);
+
+                _dis *= _noiseTexture;
 
 
                 float4 _col1 =    _R1   * splat.r +
@@ -145,7 +171,6 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
 					_A2 * (1 - splat.r - splat.g - splat.b);
 
                 float4 _result;
-                
 
                 _result = lerp(_col2, _col1, step(_Radius, _dis));
                 _result = lerp(_result, _COL * _col1, step(_SecondaryRadius, _dis));
