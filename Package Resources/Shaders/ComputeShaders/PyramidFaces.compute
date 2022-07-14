@@ -1,0 +1,75 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+
+//Helper Methods
+float3 GetNormalFromTriangle(float3 _a, float3 _b, float3 _c)
+{
+    return normalize(cross(_b - _a, _c - _a));
+}
+
+float3 GetTriangleCenter(float3 _a, float3 _b, float3 _c)
+{
+    return (_a + _b + _c) / 3;
+}
+
+float2 GetTriangleCenter(float2 _a, float2 _b, float2 _c)
+{
+    return (_a + _b + _c) / 3;
+}
+
+struct SourceVertex
+{
+    float3 positionOS;
+    float2 uv;
+};
+
+struct DrawVertex
+{
+    float3 positionWS;
+    float2 uv;
+};
+
+struct DrawTriangle
+{
+    float3 normalWS;
+    DrawVertex vertices[3];
+};
+
+StructuredBuffer<SourceVertex> _SourceVertices;
+StructuredBuffer<int>          _SourceTriangles;
+
+AppendStructuredBuffer<DrawTriangle> _DrawTriangles;
+
+int   _NumSourceTriangles;
+float _PyramidHeight;
+float4x4 _LocalToWorld;
+
+DrawVertex TransformToWorldSpace(SourceVertex _v)
+{
+    DrawVertex _o;
+    
+    _o.positionWS = mul(_LocalToWorld, float4(_v.positionOS, 1)).xyz;
+    _o.uv         = _v.uv;
+
+    return _o;
+}
+
+[numthreads(128,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+
+    if((int)id.x >= _NumSourceTriangles)
+        return;
+
+    int _triStart = id.x * 3;
+
+    DrawVertex _inputs[3];
+
+    _inputs[0] = TransformToWorldSpace(_SourceVertices[_SourceTriangles[_triStart]]);
+    _inputs[1] = TransformToWorldSpace(_SourceVertices[_SourceTriangles[_triStart + 1]]);
+    _inputs[2] = TransformToWorldSpace(_SourceVertices[_SourceTriangles[_triStart + 2]]);
+
+    
+    
+}
