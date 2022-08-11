@@ -3,6 +3,10 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
     Properties
     {
         _TestTex ("Test Texture", 2D) = "white" {}
+        _MaskTex ("Mask Texture", 2D) = "white" {}
+        
+        _COL1 ("Color one", color) = (1.0, 1.0, 1.0, 1.0)
+        _COL2 ("Color two", color) = (1.0, 1.0, 1.0, 1.0)
         
         _FrontCol ("Front Color", color) = (1.0, 1.0, 1.0, 1.0)
         _TopCol   ("Top Color"  , color) = (1.0, 1.0, 1.0, 1.0)
@@ -78,6 +82,9 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
 
             sampler2D _TestTex;
             float4    _TestTex_ST;
+
+            sampler2D _MaskTex;
+            float4    _MaskTex_ST;
             
             sampler2D _MainTex   ;
             float4    _MainTex_ST;
@@ -89,6 +96,10 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
             sampler2D _Texture2;
             sampler2D _Texture3;
             sampler2D _Texture4;
+
+            float4 _COL1;
+            float4 _COL2;
+            
 
             float4 _GradientCol1;
             float4 _GradientCol2;
@@ -148,6 +159,7 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
             {
                 float _dis = distance(_SamplePos, i.uvWorld);
                 
+                
                 float4 splat = tex2D(_MainTex, i.uvSplat);
 
                 float2 uv_front = TRANSFORM_TEX(i.worldPos.xy, _TestTex);
@@ -176,7 +188,7 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
                 _SideCol  *= _weights.x;
                 _TopCol   *= _weights.y;
 
-                fixed4 col = _FrontCol + _SideCol + _TopCol;
+                fixed4 _triPlanarCol = _FrontCol + _SideCol + _TopCol;
 
                 
                 // triplanar noise
@@ -212,16 +224,28 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
 					_B2 * splat.b +
 					_A2 * (1 - splat.r - splat.g - splat.b);
 
-                float4 _result;
+                float4 _baseCol;
 
-                _result = lerp(_col2, _col1, step(_MainRadius, _dis));
-                _result = lerp(_result, _COL * _col1, step(_SecondaryRadius, _dis));
+                _baseCol = lerp(_col2, _col1, step(_MainRadius, _dis));
+                _baseCol = lerp(_baseCol, _COL * _col1, step(_SecondaryRadius, _dis));
 
-                
-                
                 float4 _gradient = lerp(_GradientCol1, _GradientCol2, i.worldPos.y);
-
-                return  _result * col * _gradient;
+                
+                // float2 uv_topp   = TRANSFORM_TEX(i.worldPos.xz, _MaskTex);
+                //
+                // fixed4 _mask = tex2D(_MaskTex, uv_topp * 0.05) * _weights.y;
+                //
+                // fixed4 _mask = tex2D(_MaskTex, uv_topp * 0.05) * _weights.y;
+                // + fixed4(1, 1, 1,1) * _weights.x + fixed4(1, 1, 1,1) * _weights.z;
+                //
+                // fixed4 _baseWithMask = _baseCol * _mask  + _COL2 * (1 - _mask);
+                //
+                // return  _baseWithMask * _triPlanarCol * _gradient;
+                //
+                // return _baseWithMask;
+                
+                
+                return  _baseCol * _triPlanarCol * _gradient;
 
                 
                 // float2 newUV = i.uv * GetClockFrame();
