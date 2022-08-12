@@ -55,6 +55,20 @@ DrawVertex TransformToWorldSpace(SourceVertex _v)
     return _o;
 }
 
+void SetupAndOutputTriangle(DrawVertex _a, DrawVertex _b, DrawVertex _c)
+{
+    float3 _normalWS = GetNormalFromTriangle(_a.positionWS, _b.positionWS, _c.positionWS);
+
+    DrawTriangle _tri;
+
+    _tri.normalWS = _normalWS;
+    _tri.vertices[0] = _a;
+    _tri.vertices[1] = _b;
+    _tri.vertices[2] = _c;
+
+    _DrawTriangles.Append(_tri);
+}
+
 [numthreads(128,1,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
@@ -70,6 +84,20 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     _inputs[1] = TransformToWorldSpace(_SourceVertices[_SourceTriangles[_triStart + 1]]);
     _inputs[2] = TransformToWorldSpace(_SourceVertices[_SourceTriangles[_triStart + 2]]);
 
+
+    float3 _pt0 = _inputs[0].positionWS;
+    float3 _pt1 = _inputs[1].positionWS;
+    float3 _pt2 = _inputs[2].positionWS;
+
+    float3 _triNormal  = GetNormalFromTriangle(_pt0, _pt1, _pt2);
+
+    DrawVertex _center;
+    _center.positionWS = GetTriangleCenter(_pt0, _pt1, _pt2) + _triNormal * _PyramidHeight;
+    //_center.uv         = GetTriangleCenter(_pt0.uv, _pt1.uv, _pt2.uv);
+
+    // SetupAndOutputTriangle(_inputs[0], _inputs[1], _center);
+    // SetupAndOutputTriangle(_inputs[1], _inputs[2], _center);
+    // SetupAndOutputTriangle(_inputs[2], _inputs[3], _center);
     
     
 }
