@@ -16,13 +16,27 @@ Shader "MUGCUP Custom Shaders/Unlit/PyramidFaces"
             
             CGPROGRAM
 
+            // Signal this shader requires compute buffers
+            #pragma prefer_hlslcc gles
+            #pragma exclude_renderers d3d11_9x
+            #pragma target 5.0
+
+            // Lighting and shadow keywords
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
+            #pragma multi_compile _ _SHADOWS_SOFT
+
+
 
 
             
             #pragma vertex vert
             #pragma fragment frag
 
-            #include "UnityCG.cginc"
+            //#include "UnityCG.cginc"
+            #include "PyramidFace.hlsl"
 
             struct appdata
             {
@@ -36,24 +50,38 @@ Shader "MUGCUP Custom Shaders/Unlit/PyramidFaces"
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-
-            v2f vert (appdata v)
-            {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                return o;
-            }
-
-            fixed4 frag (v2f i) : SV_Target
-            {
-                fixed4 col = tex2D(_MainTex, i.uv);
-              
-                return col;
-            }
+         
             ENDCG
+        }
+        
+        // Shadow caster pass. This pass renders a shadow map.
+        // We treat it almost the same, except strip out any color/lighting logic
+        Pass {
+
+            Name "ShadowCaster"
+            Tags { "LightMode" = "ShadowCaster" }
+
+            HLSLPROGRAM
+            // Signal this shader requires compute buffers
+            #pragma prefer_hlslcc gles
+            #pragma exclude_renderers d3d11_9x
+            #pragma target 5.0
+
+            // This sets up various keywords for different light types and shadow settings
+            #pragma multi_compile_shadowcaster
+
+            // Register our functions
+            #pragma vertex Vertex
+            #pragma fragment Fragment
+
+            // Define a special keyword so our logic can change if inside the shadow caster pass
+            #define SHADOW_CASTER_PASS
+
+            // Include our logic file
+            //#include "UnityCG.cginc"
+            #include "PyramidFace.hlsl"
+
+            ENDHLSL
         }
     }
 }

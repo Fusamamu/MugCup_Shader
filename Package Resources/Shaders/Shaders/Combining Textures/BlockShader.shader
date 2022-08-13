@@ -1,51 +1,67 @@
-Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
+Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
 {
     Properties
     {
-        _TestTex ("Test Texture", 2D) = "white" {}
-        _MaskTex ("Mask Texture", 2D) = "white" {}
+        //_TestTex ("Test Texture", 2D) = "white" {}
         
         _COL1 ("Color one", color) = (1.0, 1.0, 1.0, 1.0)
         _COL2 ("Color two", color) = (1.0, 1.0, 1.0, 1.0)
         
+        [Header(Splat Texture)]
+        [Space(10)]
+        _MainTex("Splat Map", 2D) = "white" {}
+        
+        [Header(Mask Texture)]
+        [Space(10)]
+        _MaskTex ("Mask Texture", 2D) = "white" {}
+        
+        [Header(Flow Map Texture)]
+        [Space(10)]
+        _FlowMapTexture ("Flow Map Texture", 2D) = "white" {}
+        
+        [Header(Triplanar Color)]
+        [Space(10)]
         _FrontCol ("Front Color", color) = (1.0, 1.0, 1.0, 1.0)
         _TopCol   ("Top Color"  , color) = (1.0, 1.0, 1.0, 1.0)
         _SideCol  ("Side Color" , color) = (1.0, 1.0, 1.0, 1.0)
         
-        _GradientCol1 ("Gradient Color 1", color) = (1.0, 1.0, 1.0, 1.0)
+        [Header(Gradient Color In World Space from Top to Bottom)]
+        [Space(10)]
         _GradientCol2 ("Gradient Color 2", color) = (1.0, 1.0, 1.0, 1.0)
-        
-        
-        _MainTex  ("Splat Map", 2D) = "white" {}
-        
-        _FlowMapTexture ("Flow Map Texture", 2D) = "white" {}
-        
-		[NoScaleOffset] _Texture1 ("Texture 1", 2D) = "white" {}
-		[NoScaleOffset] _Texture2 ("Texture 2", 2D) = "white" {}
-        [NoScaleOffset] _Texture3 ("Texture 3", 2D) = "white" {}
-		[NoScaleOffset] _Texture4 ("Texture 4", 2D) = "white" {}
-        
+        _GradientCol1 ("Gradient Color 1", color) = (1.0, 1.0, 1.0, 1.0)
+
+        [Header(RGBA Color Dark Zone)]
+        [Space(10)]
         _R1 ("Red Channel Color 1"  , color) = (1.0, 1.0, 1.0, 1.0)
         _G1 ("Green Channel Color 1", color) = (1.0, 1.0, 1.0, 1.0)
         _B1 ("Blue Channel Color 1" , color) = (1.0, 1.0, 1.0, 1.0)
         _A1 ("Black Channel Color 1", color) = (1.0, 1.0, 1.0, 1.0)
         
+        [Header(RGBA Color Light Zone)]
+        [Space(10)]
         _R2("Red Channel Color 2"  , color) = (1.0, 1.0, 1.0, 1.0)
         _G2("Green Channel Color 2", color) = (1.0, 1.0, 1.0, 1.0)
         _B2("Blue Channel Color 2" , color) = (1.0, 1.0, 1.0, 1.0)
         _A2("Black Channel Color 2", color) = (1.0, 1.0, 1.0, 1.0)
         
-        _COL("Some Color", color) = (1.0, 1.0, 1.0, 1.0)
+        [Header(Filter Color for Lerp betwern Dark and Light Zone)]
+        [Space(10)]
+        _FilterCol("Filter Color", color) = (1.0, 1.0, 1.0, 1.0)
         
-        _SamplePos("Sample Position", Vector) = (0.0, 0.0, 0.0)
+        [Header(Light Position)]
+        [Space(10)]
+        _SamplePos("Light Position", Vector) = (0.0, 0.0, 0.0)
         
-        _MainRadius("Radius", float) = 1
+        [Header(Light Radius)]
+        [Space(10)]
+        _MainRadius     ("Main Radius"    , float) = 1
         _SecondaryRadius("SecondaryRadius", float) = 0.5
          
-        _NoiseScale ("Noise Scale", Range(0, 10)) = 1 
+        [Header(Flow Map Attributes)]
+        [Space(10)]
+        _NoiseScale ("Noise Scale" , Range(0, 10)) = 1 
         _WobbleSpeed("Wobble Speed", float) = 1
         _ClockFrame ("Clock Frame" , int  ) = 1
-        
     }
       
     SubShader
@@ -99,7 +115,6 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
 
             float4 _COL1;
             float4 _COL2;
-            
 
             float4 _GradientCol1;
             float4 _GradientCol2;
@@ -118,7 +133,7 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
             float4 _B2;
             float4 _A2;
 
-            float4 _COL;
+            float4 _FilterCol;
 
             float3 _SamplePos;
             
@@ -227,7 +242,7 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
                 float4 _baseCol;
 
                 _baseCol = lerp(_col2, _col1, step(_MainRadius, _dis));
-                _baseCol = lerp(_baseCol, _COL * _col1, step(_SecondaryRadius, _dis));
+                _baseCol = lerp(_baseCol, _FilterCol * _col1, step(_SecondaryRadius, _dis));
 
                 float4 _gradient = lerp(_GradientCol1, _GradientCol2, i.worldPos.y);
                 
@@ -258,3 +273,4 @@ Shader "MUGCUP Custom Shaders/Unlit/RGBSplat"
         }
     }  
 }
+

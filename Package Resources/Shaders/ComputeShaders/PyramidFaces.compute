@@ -93,11 +93,9 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 
     DrawVertex _center;
     _center.positionWS = GetTriangleCenter(_pt0, _pt1, _pt2) + _triNormal * _PyramidHeight;
-    //_center.uv         = GetTriangleCenter(_pt0.uv, _pt1.uv, _pt2.uv);
+    _center.uv         = GetTriangleCenter(_inputs[0].uv, _inputs[1].uv, _inputs[2].uv);
 
-    // SetupAndOutputTriangle(_inputs[0], _inputs[1], _center);
-    // SetupAndOutputTriangle(_inputs[1], _inputs[2], _center);
-    // SetupAndOutputTriangle(_inputs[2], _inputs[3], _center);
-    
-    
+     SetupAndOutputTriangle(_inputs[0], _inputs[1], _center);
+     SetupAndOutputTriangle(_inputs[1], _inputs[2], _center);
+     SetupAndOutputTriangle(_inputs[2], _inputs[0], _center);
 }

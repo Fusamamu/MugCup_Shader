@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using MugCup.Shader.Runtime;
+using MugCup_Shader.Runtime;
 
-namespace MugCup.Shader.Editor
+namespace MugCup_Shader.Editor
 {
     [CustomEditor(typeof(BakeParticleToMesh))]
     public class BakeParticleToMeshEditor : UnityEditor.Editor

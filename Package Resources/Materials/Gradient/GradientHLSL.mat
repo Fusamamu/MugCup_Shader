@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StylizedWater
-  m_Shader: {fileID: -6465566751694194690, guid: bd04fffc540694db4abc66036c800f90, type: 3}
+  m_Name: GradientHLSL
+  m_Shader: {fileID: 4800000, guid: 623dca13d465643a3b7d03d62b8b24bd, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -106,11 +106,17 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ColBottom: {r: 0.5377358, g: 0.31514093, b: 0.22574759, a: 1}
+    - _ColMid: {r: 0.7264151, g: 0.62860227, b: 0.60648805, a: 1}
+    - _ColTop: {r: 0.3584906, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _SpreadPos: {r: 0, g: 0.5, b: 0, a: 1}
+    - _SpreadPos1: {r: 0, g: 0.38, b: 0, a: 1}
+    - _SpreadPos2: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &2960858251564616481
+--- !u!114 &9140896980295894262
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
