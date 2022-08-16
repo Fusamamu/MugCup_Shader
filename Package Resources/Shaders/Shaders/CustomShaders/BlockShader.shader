@@ -3,6 +3,7 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
     Properties
     {
         //_TestTex ("Test Texture", 2D) = "white" {}
+        [Toggle(GRADIENT_WORLDPOS)] _EnableGradientWorld ("Enable World Gradient", Float) = 0
         
         _COL1 ("Color one", color) = (1.0, 1.0, 1.0, 1.0)
         _COL2 ("Color two", color) = (1.0, 1.0, 1.0, 1.0)
@@ -74,6 +75,8 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+
+            #pragma multi_compile __ GRADIENT_WORLDPOS
         
             #include "UnityCG.cginc"
             
@@ -258,9 +261,15 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
                 // return  _baseWithMask * _triPlanarCol * _gradient;
                 //
                 // return _baseWithMask;
-                
-                
+
+                #ifdef GRADIENT_WORLDPOS
                 return  _baseCol * _triPlanarCol * _gradient;
+                #else
+                return  _baseCol * _triPlanarCol;
+                #endif
+                
+                
+                
 
                 
                 // float2 newUV = i.uv * GetClockFrame();
