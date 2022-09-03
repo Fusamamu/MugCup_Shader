@@ -5,6 +5,10 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
         //_TestTex ("Test Texture", 2D) = "white" {}
         [Toggle(GRADIENT_WORLDPOS)] _EnableGradientWorld ("Enable World Gradient", Float) = 0
         
+        [HDR] 
+        _HitColor  ("Hit Color", Color) = (1.0, 1.0, 1.0, 1.0)
+        _Intensity ("Hit Effect Intensity", float) = 1
+        
         _COL1 ("Color one", color) = (1.0, 1.0, 1.0, 1.0)
         _COL2 ("Color two", color) = (1.0, 1.0, 1.0, 1.0)
         
@@ -99,6 +103,11 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
                 float3 normal   : TEXCOORD4;
             };
 
+    
+
+            float4 _HitColor;
+            float _Intensity;
+            
             sampler2D _TestTex;
             float4    _TestTex_ST;
 
@@ -164,7 +173,6 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
                 o.uvWorld = mul(unity_ObjectToWorld, v.vertex);
 
                 o.normal = v.normal;
-
 
                 float3 worldNormal = mul(v.normal, (float3x3)unity_WorldToObject);
                 
@@ -265,11 +273,8 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
                 #ifdef GRADIENT_WORLDPOS
                 return  _baseCol * _triPlanarCol * _gradient;
                 #else
-                return  _baseCol * _triPlanarCol;
+                return  _baseCol * _triPlanarCol + (_HitColor * _Intensity);
                 #endif
-                
-                
-                
 
                 
                 // float2 newUV = i.uv * GetClockFrame();
