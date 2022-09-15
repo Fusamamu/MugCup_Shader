@@ -89,14 +89,14 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _Fog_Distance: 57.9
+    - _Fog_Distance: 98.3
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Hue_Shift: 507
+    - _Hue_Shift: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _Over_All_Fog_Intensity: 1.41
+    - _Over_All_Fog_Intensity: 67.7
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -112,8 +112,8 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Fog_Color: {r: 0.7924528, g: 0.09344961, b: 0.09344961, a: 1}
-    - _Node_to_Mix: {r: -3.95, g: 0, b: 0, a: 0}
+    - _Fog_Color: {r: 0.11372549, g: 0.047058824, b: 0.023529412, a: 1}
+    - _Node_to_Mix: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &5474091696878908015
