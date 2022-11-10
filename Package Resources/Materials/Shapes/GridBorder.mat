@@ -7,10 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FogMultiColor
-  m_Shader: {fileID: -6465566751694194690, guid: fae4f56c27b1c45d0857d9b15d5e0061, type: 3}
+  m_Name: GridBorder
+  m_Shader: {fileID: 4800000, guid: b45d41fbda523453bb231939e5fcf818, type: 3}
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _DRAWMODE_CENTER_OUTLINE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -87,20 +88,21 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _DrawMode: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _Fog_Distance: 2.1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Hue_Shift: 0
+    - _LineThickness: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _Over_All_Fog_Intensity: 1.6
+    - _Offset: 1.35
     - _Parallax: 0.005
-    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _Rotation: 0
+    - _Rounding: 0.16
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -110,13 +112,16 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Center: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Fog_Color: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
-    - _Node_to_Mix: {r: 0, g: 0, b: 0, a: 0}
+    - _GirdSize: {r: 1, g: 0, b: 0, a: 0}
+    - _RectSize: {r: 0.8, g: 0.8, b: 0, a: 0}
+    - _SmoothStep: {r: 0, g: 0, b: 0, a: 0}
+    - _Smoothstep: {r: 0.04, g: 0.33, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &5474091696878908015
+--- !u!114 &2226862775485035693
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
