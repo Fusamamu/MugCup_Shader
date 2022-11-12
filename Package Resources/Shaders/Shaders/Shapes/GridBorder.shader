@@ -174,42 +174,109 @@ Shader "Unlit/GridBorder"
                 }
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            fixed4 GetIsolatedTile(float2 uv)
             {
-                float2 _pos = i.uv.xz - _Center;
+                float2 _pos = uv.xy;
 
                 float _r1 = AABoxSDF_Separate_Rounded_Corner(_pos, _RectSize, float4(_Rounding, _Rounding, _Rounding, _Rounding)) + _LineThickness;
-
                 
                 float _mask = step(0.0, _r1);
-                
-                
-                if(_DrawMode != 0.0f)
-                    _r1 = abs(_r1) - _LineThickness;
-                
-                float _distDelta = fwidth(_r1);
+
+                _r1 = abs(_r1) - _LineThickness;
+                const float _distDelta = fwidth(_r1);
                 _r1 = smoothstep(_distDelta, -_distDelta, _r1);
-
-
-
-                
-
-                
 
                 float _r2 = AABoxSDF_Separate_Rounded_Corner(_pos, _RectSize, float4(_Rounding, _Rounding, _Rounding, _Rounding)) + _LineThickness;
                 _r2 = smoothstep(_SmoothStep.x, _SmoothStep.y, _r2);
-
-
                 _r2 = saturate(_r2 - _mask);
-                
-                
 
                 float _r3 = _r1 + _r2;
-                
 
                 fixed4 col = fixed4(_Color.xyz, _r3);
-                
+
                 return col;
+            }
+
+            
+
+            fixed4 GetIShapeTile(float2 uv)
+            {
+                float2 _pos = uv.xy;
+
+                _RectSize = float2(_RectSize.x + 0.65, _RectSize.y);
+
+                float _r1 = AABoxSDF_Separate_Rounded_Corner(_pos, _RectSize, float4(_Rounding, _Rounding, _Rounding, _Rounding)) + _LineThickness;
+                
+                float _mask = step(0.0, _r1);
+
+                _r1 = abs(_r1) - _LineThickness;
+                const float _distDelta = fwidth(_r1);
+                _r1 = smoothstep(_distDelta, -_distDelta, _r1);
+
+                float _r2 = AABoxSDF_Separate_Rounded_Corner(_pos, _RectSize, float4(_Rounding, _Rounding, _Rounding, _Rounding)) + _LineThickness;
+                _r2 = smoothstep(_SmoothStep.x, _SmoothStep.y, _r2);
+                _r2 = saturate(_r2 - _mask);
+
+                float _r3 = _r1 + _r2;
+
+                fixed4 col = fixed4(_Color.xyz, _r3);
+
+                return col;
+            }
+
+
+
+            fixed4 GetInvertIsolatedTile(float2 uv)
+            {
+                float2 _pos = uv.xy;
+
+                float _r1 = AABoxSDF_Separate_Rounded_Corner(_pos, _RectSize, float4(_Rounding, _Rounding, _Rounding, _Rounding)) + _LineThickness;
+                
+                float _mask = step(0.0, _r1);
+
+                _r1 = abs(_r1) - _LineThickness;
+                const float _distDelta = fwidth(_r1);
+                _r1 = smoothstep(_distDelta, -_distDelta, _r1);
+
+                float _r2 = AABoxSDF_Separate_Rounded_Corner(_pos, _RectSize, float4(_Rounding, _Rounding, _Rounding, _Rounding)) + _LineThickness;
+                _r2 = smoothstep(_SmoothStep.x, _SmoothStep.y, _r2);
+                _r2 = saturate(_r2 - (1 - _mask));
+                
+                float _r3 = _r1 + _r2;
+
+                fixed4 col = fixed4(_Color.xyz, _r3);
+
+                return col;
+            }
+
+
+            fixed4 GetLShapeTile(float2 uv)
+            {
+                float _outsideCorner = AABoxSDF_Separate_Rounded_Corner(uv.xy, float2(1 - _Offset, 1 - _Offset), float4(0, 0, 0, _Rounding)) + _LineThickness;
+
+                _outsideCorner = abs(_outsideCorner) - _LineThickness;
+
+                float _insideCorner = AABoxSDF_Separate_Rounded_Corner(uv.xy, float2(_Offset, _Offset), float4(0, 0, 0, _Rounding)) - _LineThickness;
+
+                _insideCorner = abs(_insideCorner) - _LineThickness;
+
+                float _finalResult = Union(_outsideCorner, _insideCorner);
+
+                float _distDelta = fwidth(_finalResult);
+                float _antiAlias = smoothstep(_distDelta, -_distDelta, _finalResult);
+
+
+                return _antiAlias;
+            }
+
+            fixed4 frag (v2f i) : SV_Target
+            {
+                fixed4 _col = GetInvertIsolatedTile(i.uv.xz - _Center);
+
+                if(_DrawMode != 0.0f)
+                    _col = GetIsolatedTile(i.uv.xz - _Center);
+                
+                return _col;
             }
             ENDCG
         }

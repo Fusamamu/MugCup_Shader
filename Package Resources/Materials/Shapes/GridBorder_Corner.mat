@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GridBorder
+  m_Name: GridBorder_Corner
   m_Shader: {fileID: 4800000, guid: b45d41fbda523453bb231939e5fcf818, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
@@ -97,7 +97,7 @@ Material:
     - _LineThickness: 0.03
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _Offset: 0.85
+    - _Offset: 0
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -112,16 +112,15 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Center: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.6462121, g: 0, b: 1, a: 1}
+    - _Center: {r: 0.35, g: 0.35, b: 0, a: 0}
+    - _Color: {r: 1, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GirdSize: {r: 1, g: 0, b: 0, a: 0}
-    - _RectSize: {r: 0.85, g: 0.85, b: 0, a: 0}
-    - _SmoothStep: {r: -0.22, g: 0.06, b: 0, a: 0}
-    - _Smoothstep: {r: 0.04, g: 0.33, b: 0, a: 0}
+    - _GirdSize: {r: 0, g: 0, b: 2, a: 0}
+    - _RectSize: {r: 1, g: 1, b: 0, a: 0}
+    - _SmoothStep: {r: -0.86, g: 0.06, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &2226862775485035693
+--- !u!114 &5162621808009204366
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
