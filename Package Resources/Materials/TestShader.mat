@@ -1,18 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-548143974594622240
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 5
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -20,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Cloud
-  m_Shader: {fileID: -6465566751694194690, guid: 5215b841da93b4efdbb6550849712199, type: 3}
+  m_Name: TestShader
+  m_Shader: {fileID: -6465566751694194690, guid: d89a6f113c36941db9b1dd2a8843822a, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -92,38 +79,32 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _Base_Scale: 0.03
-    - _Base_Speed: 1
-    - _Base_Strength: 0.1
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DepthDistance: 7.78
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _Float: 0.75
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
-    - _Noise_Edge_1: -0.47
-    - _Noise_Edge_2: 1.3
-    - _Noise_Height: 3.6
-    - _Noise_Power: 0.09
-    - _Noise_Scale: 1.8
-    - _Noise_Speed: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _SecondaryDepthDistance: 13.9
+    - _SecondarySpread: 2.29
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _Spread: 5.79
     - _SrcBlend: 1
     - _Surface: 0
     - _WorkflowMode: 1
@@ -131,10 +112,22 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color_Peak: {r: 0.9339623, g: 0.885502, b: 0.885502, a: 0}
-    - _Color_Valley: {r: 0, g: 0, b: 0, a: 0}
+    - _Color_A: {r: 0, g: 0, b: 0, a: 0.99215686}
+    - _Color_B: {r: 1, g: 0, b: 0.09426212, a: 1}
+    - _Color_C: {r: 1, g: 0.76923084, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Noise_Remap: {r: 0, g: 1, b: -1, a: 1}
-    - _Rotate_Projection: {r: 1, g: 0, b: 0, a: 90}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
+--- !u!114 &6062132980763653608
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
