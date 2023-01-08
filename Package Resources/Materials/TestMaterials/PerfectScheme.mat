@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TestCombineTexture3
+  m_Name: PerfectScheme
   m_Shader: {fileID: 4800000, guid: 70cb9fe2e488c4edcb3eaa2a6739e669, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
@@ -153,16 +153,18 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FrontCol: {r: 1, g: 0, b: 0, a: 1}
+    - _FrontCol: {r: 0.7735849, g: 0.1788003, b: 0.1788003, a: 1}
     - _G1: {r: 1, g: 0, b: 0.619472, a: 1}
     - _G2: {r: 0.764151, g: 0.5665104, b: 0.5082325, a: 1}
+    - _GradientCol1: {r: 0.3018868, g: 0.21787113, b: 0.21787113, a: 1}
+    - _GradientCol2: {r: 0.078431375, g: 0.32156864, b: 0.31764707, a: 1}
     - _Mask1: {r: 1, g: 1, b: 1, a: 1}
     - _Mask2: {r: 1, g: 1, b: 1, a: 1}
     - _Mask3: {r: 1, g: 1, b: 1, a: 1}
     - _Mask4: {r: 1, g: 1, b: 1, a: 1}
     - _R1: {r: 0.7830189, g: 0.62681794, b: 0.49123356, a: 1}
     - _R2: {r: 0.764151, g: 0.5816709, b: 0.47218764, a: 1}
-    - _SideCol: {r: 0, g: 0, b: 0, a: 1}
+    - _SideCol: {r: 0.1419216, g: 0.06608225, b: 0.254717, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _TopCol: {r: 0, g: 0, b: 0, a: 1}
+    - _TopCol: {r: 0.7264151, g: 0.36663404, b: 0.36663404, a: 1}
   m_BuildTextureStacks: []
