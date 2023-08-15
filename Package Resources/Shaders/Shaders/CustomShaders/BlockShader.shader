@@ -49,6 +49,11 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
         _B2("Blue Channel Color 2" , color) = (1.0, 1.0, 1.0, 1.0)
         _A2("Black Channel Color 2", color) = (1.0, 1.0, 1.0, 1.0)
         
+        [Header(RGBA Gradient Color Light Zone)]
+        [Space(10)]
+        _GG21("Green Channel Gradient Color 2 1", color) = (1.0, 1.0, 1.0, 1.0)
+        _GG22("Green Channel Gradient Color 2 2", color) = (1.0, 1.0, 1.0, 1.0)
+        
         [Header(Filter Color for Lerp betwern Dark and Light Zone)]
         [Space(10)]
         _FilterCol("Filter Color", color) = (1.0, 1.0, 1.0, 1.0)
@@ -145,6 +150,9 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
             float4 _B2;
             float4 _A2;
 
+            float4 _GG21;
+            float4 _GG22;
+
             float4 _FilterCol;
 
             float3 _SamplePos;
@@ -238,6 +246,17 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
 
                 _dis *= _noiseTexture;
 
+
+                float4 _finalG2;
+
+                if(i.uvWorld.y > 1)
+                    _finalG2 = _G2;
+                else
+                    _finalG2 = _GG21;
+
+                if(i.uvWorld.y < 0)
+                    _finalG2 = _GG22;
+                
                 float4 _col1 =
                     _R1 * splat.r +
 					_G1 * splat.g +
@@ -246,7 +265,7 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
 
                 float4 _col2 =
                     _R2 * splat.r +
-					_G2 * splat.g +
+					_finalG2 * splat.g +
 					_B2 * splat.b +
 					_A2 * (1 - splat.r - splat.g - splat.b);
 

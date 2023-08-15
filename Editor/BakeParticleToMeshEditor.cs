@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using MugCup_Shader.Runtime;
 
 namespace MugCup_Shader.Editor
 {

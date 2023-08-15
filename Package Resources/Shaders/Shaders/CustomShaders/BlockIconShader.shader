@@ -152,21 +152,21 @@ Shader "MUGCUP Custom Shaders/Unlit/Block Icon Shader"
                 return floor(fmod(_Time.y * _WobbleSpeed, _ClockFrame)) / _ClockFrame;
             }
             
-            v2f vert (appdata v)
+            v2f vert (appdata _v)
             {
                 v2f o;
                 
-                o.vertex   = UnityObjectToClipPos(v.vertex);
-                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                o.vertex   = UnityObjectToClipPos(_v.vertex);
+                o.worldPos = mul(unity_ObjectToWorld, _v.vertex);
 
-                o.uv      = TRANSFORM_TEX(v.uv, _FlowMapTexture);
-                o.uvSplat = v.uv;
-                o.uvWorld = mul(unity_ObjectToWorld, v.vertex);
+                o.uv      = TRANSFORM_TEX(_v.uv, _FlowMapTexture);
+                o.uvSplat = _v.uv;
+                o.uvWorld = mul(unity_ObjectToWorld, _v.vertex);
 
-                o.normal = v.normal;
+                o.normal = _v.normal;
 
 
-                float3 worldNormal = mul(v.normal, (float3x3)unity_WorldToObject);
+                float3 worldNormal = mul(_v.normal, (float3x3)unity_WorldToObject);
                 
                 o.normal = normalize(worldNormal);
                 

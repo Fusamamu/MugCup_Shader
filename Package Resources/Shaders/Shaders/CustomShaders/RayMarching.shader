@@ -65,15 +65,15 @@ Shader "Unlit/RayMarching"
                 return _dO;
             }
 
-            v2f vert (appdata v)
+            v2f vert (appdata _v)
             {
                 v2f o;
                 
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.vertex = UnityObjectToClipPos(_v.vertex);
                 
-                o.uv     = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv     = TRANSFORM_TEX(_v.uv, _MainTex);
                 o.ro     = _WorldSpaceCameraPos;
-                o.hitPos = mul(unity_ObjectToWorld, v.vertex);
+                o.hitPos = mul(unity_ObjectToWorld, _v.vertex);
                 
                 return o;
             }

@@ -6,7 +6,7 @@ using UnityEditor;
 using System.IO;
 #endif
 
-namespace MugCup_Shader.Runtime
+namespace MugCup_Shader
 {
     [RequireComponent(typeof(ParticleSystem))]
     public class BakeParticleToMesh : MonoBehaviour 
