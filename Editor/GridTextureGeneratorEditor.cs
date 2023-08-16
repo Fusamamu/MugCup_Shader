@@ -26,6 +26,24 @@ namespace MugCup_Shader.Editor
 
             if (GUILayout.Button("Save generated texture"))
                 SaveTexture();
+
+            if (GUILayout.Button("Test set pixel colors"))
+            {
+                gridTextureGenerator.OutputTexture = GridTextureGenerator.CreatBlackTexture(16, 16);
+                
+                GridTextureGenerator.SetPixelsColor(
+                    new []
+                    {
+                        new Vector2Int(1, 1),
+                        new Vector2Int(2, 1),
+                        new Vector2Int(3, 1),
+                        new Vector2Int(4, 1),
+                    }, 
+                    gridTextureGenerator.OutputTexture, 
+                    Color.white);
+
+                gridTextureGenerator.Material.mainTexture = gridTextureGenerator.OutputTexture;
+            }
         }
 
         private void SaveTexture()

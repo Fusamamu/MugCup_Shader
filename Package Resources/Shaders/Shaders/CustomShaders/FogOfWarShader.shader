@@ -2,7 +2,6 @@ Shader "MUGCUP Custom Shaders/Unlit/FogOfWarShader"
 {
     Properties
     {
-        _Color("Main Color", color) = (1.0, 1.0, 1.0, 1.0)
     }
     
     SubShader
@@ -12,11 +11,12 @@ Shader "MUGCUP Custom Shaders/Unlit/FogOfWarShader"
 
         Pass
         {
-            CGPROGRAM
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
 
             #include "UnityCG.cginc"
+            #include "Assets/MugCup_Shader/Package Resources/Shaders/Shaders/Shapes/SDF2DLIB.cginc"
 
             struct appdata
             {
@@ -27,24 +27,31 @@ Shader "MUGCUP Custom Shaders/Unlit/FogOfWarShader"
             struct v2f
             {
                 float4 vertex : SV_POSITION;
-                float2 uv     : TEXCOORD0;
+                float3 uv     : TEXCOORD0;
             };
 
             float4 _Color;
 
             v2f vert (appdata _v)
             {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(_v.vertex);
-                return o;
+                v2f _o;
+                _o.vertex = UnityObjectToClipPos(_v.vertex);
+                _o.uv     = _v.vertex;
+                return _o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            fixed4 frag (v2f _i) : SV_Target
             {
-                fixed4 col = _Color;
-                return col;
+                float a = AABoxSDF(_i.uv.xz, float2(1, 1));
+                float b = AABoxSDF(_i.uv.xz + float2(1, 0), float2(1, 1));
+                float c = AABoxSDF(_i.uv.xz + float2(0, 1), float2(1, 1));
+
+                float d = Union(a, b);
+                float cc = Union(d, c);
+                
+                return cc;
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }

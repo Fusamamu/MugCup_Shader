@@ -197,8 +197,6 @@ Shader "Unlit/GridBorder"
                 return col;
             }
 
-            
-
             fixed4 GetIShapeTile(float2 uv)
             {
                 float2 _pos = uv.xy;
@@ -224,8 +222,6 @@ Shader "Unlit/GridBorder"
                 return col;
             }
 
-
-
             fixed4 GetInvertIsolatedTile(float2 uv)
             {
                 float2 _pos = uv.xy;
@@ -248,7 +244,6 @@ Shader "Unlit/GridBorder"
 
                 return col;
             }
-
 
             fixed4 GetLShapeTile(float2 uv)
             {

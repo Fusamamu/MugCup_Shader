@@ -76,11 +76,22 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
       
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        // Tags { "RenderType"="Opaque" }
+        Tags
+        {
+            "RenderType"      = "Opaque"
+            "RenderPipeline"  = "UniversalPipeline" 
+            "IgnoreProjector" = "True" 
+        }
         LOD 100
         
         Pass
         {
+            Tags
+            {
+                "LightMode" = "UniversalForward"
+            }
+            
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
