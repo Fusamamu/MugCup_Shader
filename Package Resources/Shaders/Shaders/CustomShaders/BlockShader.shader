@@ -3,7 +3,9 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
     Properties
     {
         //_TestTex ("Test Texture", 2D) = "white" {}
-        [Toggle(GRADIENT_WORLDPOS)] _EnableGradientWorld ("Enable World Gradient", Float) = 0
+        [Toggle(GRADIENT_WORLDPOS)]      _EnableGradientWorld        ("Enable World Gradient"        , Float) = 0
+        [Toggle(VERTICAL_STEP_GRADIENT)] _EnableVerticalStepGradient ("Enable Vertical Step Gradient", Float) = 0
+        [Toggle(TOP_PLANAR_MASK)]        _EnableSomething            ("Enable Top Planar Mask"        , Float) = 0
         
         [HDR] 
         _HitColor  ("Hit Color", Color) = (1.0, 1.0, 1.0, 1.0)
@@ -18,6 +20,7 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
         
         [Header(Mask Texture)]
         [Space(10)]
+        _MaskThreshold ("Mask Threshold", float) = 0.0
         _MaskTex ("Mask Texture", 2D) = "white" {}
         
         [Header(Flow Map Texture)]
@@ -96,6 +99,8 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
             #pragma vertex vert
             #pragma fragment frag
 
+            #pragma shader_feature VERTICAL_STEP_GRADIENT 
+            #pragma shader_feature TOP_PLANAR_MASK
             #pragma multi_compile __ GRADIENT_WORLDPOS
         
             #include "UnityCG.cginc"
@@ -174,6 +179,8 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
             float _NoiseScale;
             float _WobbleSpeed;
             int   _ClockFrame;
+
+            float _MaskThreshold;
 
             float GetClockFrame()
             {
@@ -258,15 +265,15 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
                 _dis *= _noiseTexture;
 
 
-                float4 _finalG2;
+                float4 _finalG2 = _G2;
 
-                if(i.uvWorld.y > 1)
-                    _finalG2 = _G2;
-                else
+                #ifdef VERTICAL_STEP_GRADIENT
+                if(i.uvWorld.y < 1)
                     _finalG2 = _GG21;
 
                 if(i.uvWorld.y < 0)
                     _finalG2 = _GG22;
+                #endif
                 
                 float4 _col1 =
                     _R1 * splat.r +
@@ -287,18 +294,26 @@ Shader "MUGCUP Custom Shaders/Unlit/BlockShader"
 
                 float4 _gradient = lerp(_GradientCol1, _GradientCol2, i.worldPos.y);
                 
-                // float2 uv_topp   = TRANSFORM_TEX(i.worldPos.xz, _MaskTex);
-                //
+                #ifdef TOP_PLANAR_MASK
+                const float2 _mask_uv = TRANSFORM_TEX(i.worldPos.xz, _MaskTex);
+                
+                fixed4 _mask = tex2D(_MaskTex, _mask_uv * 0.05) * _weights.y;
+
+                _mask = step(_MaskThreshold, _mask);
+                
                 // fixed4 _mask = tex2D(_MaskTex, uv_topp * 0.05) * _weights.y;
-                //
-                // fixed4 _mask = tex2D(_MaskTex, uv_topp * 0.05) * _weights.y;
-                // + fixed4(1, 1, 1,1) * _weights.x + fixed4(1, 1, 1,1) * _weights.z;
-                //
-                // fixed4 _baseWithMask = _baseCol * _mask  + _COL2 * (1 - _mask);
-                //
-                // return  _baseWithMask * _triPlanarCol * _gradient;
-                //
-                // return _baseWithMask;
+                // + fixed4(1, 1, 1,1) * _weights.x + fixed4(1, 1, 1, 1) * _weights.z;
+
+                if(_weights.y < 0.9)
+                    _mask = 1;
+                
+                fixed4 _baseWithMask = _baseCol * _mask + _COL2 * (1 - _mask);
+                
+                return  _baseWithMask * _triPlanarCol * _gradient;
+                
+                //return _baseWithMask;
+                #endif
+                
 
                 #ifdef GRADIENT_WORLDPOS
                 return  _baseCol * _triPlanarCol * _gradient;

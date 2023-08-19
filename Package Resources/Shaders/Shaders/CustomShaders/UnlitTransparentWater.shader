@@ -19,7 +19,6 @@ Shader "MUGCUP Custom Shaders/Unlit/UnlitTransparentWater"
         Tags
         { 
             "Queue"          = "Transparent"
-            //"IgnoreProjector" = "True"
             "RenderType"     = "Transparent" 
         }
         
@@ -60,16 +59,14 @@ Shader "MUGCUP Custom Shaders/Unlit/UnlitTransparentWater"
             //     return SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_CameraDepthTexture, uv).r;
             // }
 
-
-
             // Z buffer to linear 0..1 depth (0 at camera position, 1 at far plane).
-// Does NOT work with orthographic projections.
-// Does NOT correctly handle oblique view frustums.
-// zBufferParam = { (f-n)/n, 1, (f-n)/n*f, 1/f }
-// float Linear01Depth(float depth, float4 zBufferParam)
-// {
-//     return 1.0 / (zBufferParam.x * depth + zBufferParam.y);
-// }
+            // Does NOT work with orthographic projections.
+            // Does NOT correctly handle oblique view frustums.
+            // zBufferParam = { (f-n)/n, 1, (f-n)/n*f, 1/f }
+            // float Linear01Depth(float depth, float4 zBufferParam)
+            // {
+            //     return 1.0 / (zBufferParam.x * depth + zBufferParam.y);
+            // }
 
             struct appdata
             {
@@ -125,9 +122,10 @@ Shader "MUGCUP Custom Shaders/Unlit/UnlitTransparentWater"
 
                 col = lerp(sceneColor, _Color, _WaterLevel);
 
+                return col;
 
 
-                 float depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, i.uv);
+                float depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, sampler_CameraDepthTexture, i.uv);
 
                 depth = LinearEyeDepth(depth, _ZBufferParams);
 
